@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Transaccion {
   String id;
   String titulo;
@@ -6,9 +8,9 @@ class Transaccion {
 
   //Definimos el constructor de la clase por nombres
   Transaccion({
-    this.id, 
-    this.titulo, 
-    this.precio,
-    this.fecha
+    @required this.id, 
+    @required this.titulo, 
+    @required this.precio,
+    @required this.fecha
   });
 }
