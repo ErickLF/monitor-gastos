@@ -14,6 +14,20 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
   final inputPrecioController = TextEditingController();
   DateTime _fechaSeleccionada;
 
+  void _submit(){
+    String titulo = inputDescripcionController.text;
+    //Convertimos a doble
+    double precio = double.parse(inputPrecioController.text);
+
+    if (precio < 0.0 || titulo.isEmpty || _fechaSeleccionada == null){
+      return;
+    }
+    widget.guardarTransaccion(titulo,precio,_fechaSeleccionada);
+
+    //Cerramos el modal despues de guardar
+    Navigator.of(context).pop();
+  }
+
   void _mostrarCalendario(){
     showDatePicker(
       //Esta global el contexto
@@ -45,13 +59,13 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
             TextField(
               decoration: InputDecoration(labelText: "Descripción"),
               controller: inputDescripcionController,
-              //onSubmitted: (_) => {},
+              onSubmitted: (_) => _submit(),//se tiene que mandar asi por que recibe un parametro
             ),
             TextField(
               decoration: InputDecoration(labelText: "Precio"),
               controller: inputPrecioController,
               keyboardType: TextInputType.number,
-              //onSubmitted: (_) => {},
+              onSubmitted: (_) => _submit(),
             ),
             Container(
               height: 70,
@@ -74,7 +88,7 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
             ),
             RaisedButton(
               child: Text('Agregar Transaccion'),
-              onPressed: () {},
+              onPressed: _submit,
             )
           ],
         ),
