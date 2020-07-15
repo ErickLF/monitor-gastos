@@ -12,8 +12,27 @@ class NuevaTransaccion extends StatefulWidget {
 class _NuevaTransaccionState extends State<NuevaTransaccion> {
   final inputDescripcionController = TextEditingController();
   final inputPrecioController = TextEditingController();
-  DateTime fechaSeleccionada;
+  DateTime _fechaSeleccionada;
 
+  void _mostrarCalendario(){
+    showDatePicker(
+      //Esta global el contexto
+      context: context,
+      initialDate: DateTime.now(),
+      lastDate: DateTime.now(),//El limite es el dia de hoy
+      firstDate: DateTime(2020),
+    ).then((fecha) {
+      //El usuario no selecciono nada
+      if (fecha == null){
+        return;
+      }
+      setState(() {
+        _fechaSeleccionada = fecha;
+      });
+      
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -40,14 +59,14 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text(fechaSeleccionada == null
+                    child: Text(_fechaSeleccionada == null
                         ? "No ha seleccionado fecha"
-                        : DateFormat.yMMMd().format(fechaSeleccionada)),
+                        : DateFormat.yMMMd().format(_fechaSeleccionada)),
                   ),
                   Expanded(
                     child: RaisedButton(
                       child: Text("Seleccionar fecha"),
-                      onPressed: () {},
+                      onPressed: _mostrarCalendario,
                     ),
                   ),
                 ],
