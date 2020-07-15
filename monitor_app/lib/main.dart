@@ -31,14 +31,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Transaccion> transacciones = [
-    Transaccion(
-        id: "t1", titulo: "Zapatos", precio: 900.99, fecha: DateTime.now())
-  ];
+  List<Transaccion> transacciones = [];
   void _agregarNuevaTransaccion(
       String descripcion, double precio, DateTime fecha) {
     final transaccion = Transaccion(
-        id: 'tran' + (transacciones.length).toString(),
+        id: 'tran' + (transacciones.length+1).toString(),
         titulo: descripcion,
         precio: precio,
         fecha: fecha);
@@ -60,7 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         });
   }
-
+  void _eliminarTransaccion(String id){
+    setState(() {
+      transacciones.removeWhere((item){
+        return item.id == id;
+      });
+    });
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,14 +72,22 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _modalNuevaTransaccion(context),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Card(
               child: Text("Grafica"),
             ),
-            ListaTransaccion(transacciones),
+            ListaTransaccion(transacciones, _eliminarTransaccion),
           ],
         ),
       ),

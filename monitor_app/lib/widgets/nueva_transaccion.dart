@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 class NuevaTransaccion extends StatefulWidget {
   //Recibimos un puntero a la funcion del padre para guardar la transaccion
   final Function guardarTransaccion;
+
   NuevaTransaccion(this.guardarTransaccion);
   @override
   _NuevaTransaccionState createState() => _NuevaTransaccionState();
