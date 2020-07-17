@@ -13,7 +13,18 @@ class ListaTransaccion extends StatelessWidget {
       child: transaccion.isEmpty
           ? Column(
               children: <Widget>[
-                Text('No hay transacciones')
+                Text(
+                  'No hay transacciones',
+                  style: Theme.of(context).textTheme.title,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 200,
+                  child: Image.asset('assets/images/waiting.png',
+                      fit: BoxFit.cover),
+                ),
               ],
             )
           : ListView.builder(
@@ -38,7 +49,8 @@ class ListaTransaccion extends StatelessWidget {
                         DateFormat.yMMMd().format(transaccion[index].fecha)),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () => eliminarTransaccion(transaccion[index].id),
+                      onPressed: () =>
+                          eliminarTransaccion(transaccion[index].id),
                     ),
                   ),
                 );

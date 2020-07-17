@@ -14,7 +14,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.pink,
+        //Color secundario
+        accentColor: Colors.black,
+        fontFamily: 'OpenSans',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold),
+              button: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  title: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -35,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _agregarNuevaTransaccion(
       String descripcion, double precio, DateTime fecha) {
     final transaccion = Transaccion(
-        id: 'tran' + (transacciones.length+1).toString(),
+        id: 'tran' + (transacciones.length + 1).toString(),
         titulo: descripcion,
         precio: precio,
         fecha: fecha);
@@ -57,14 +78,15 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         });
   }
-  void _eliminarTransaccion(String id){
+
+  void _eliminarTransaccion(String id) {
     setState(() {
-      transacciones.removeWhere((item){
+      transacciones.removeWhere((item) {
         return item.id == id;
       });
     });
-    
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
