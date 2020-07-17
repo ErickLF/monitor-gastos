@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './widgets/lista_transacciones.dart';
 import './widgets/nueva_transaccion.dart';
 import './models/transaction.dart';
-
+import './widgets/grafica.dart';
 void main() {
   runApp(MyApp());
 }
@@ -106,9 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Card(
-              child: Text("Grafica"),
-            ),
+            Grafica(transacciones),
             ListaTransaccion(transacciones, _eliminarTransaccion),
           ],
         ),
