@@ -24,6 +24,7 @@ class Barra extends StatelessWidget {
           height: 55,
           width: 10,
           child: Stack(
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(

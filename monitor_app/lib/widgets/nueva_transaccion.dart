@@ -15,39 +15,38 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
   final inputPrecioController = TextEditingController();
   DateTime _fechaSeleccionada;
 
-  void _submit(){
+  void _submit() {
     String titulo = inputDescripcionController.text;
     //Convertimos a doble
     double precio = double.parse(inputPrecioController.text);
 
-    if (precio < 0.0 || titulo.isEmpty || _fechaSeleccionada == null){
+    if (precio < 0.0 || titulo.isEmpty || _fechaSeleccionada == null) {
       return;
     }
-    widget.guardarTransaccion(titulo,precio,_fechaSeleccionada);
+    widget.guardarTransaccion(titulo, precio, _fechaSeleccionada);
 
     //Cerramos el modal despues de guardar
     Navigator.of(context).pop();
   }
 
-  void _mostrarCalendario(){
+  void _mostrarCalendario() {
     showDatePicker(
       //Esta global el contexto
       context: context,
       initialDate: DateTime.now(),
-      lastDate: DateTime.now(),//El limite es el dia de hoy
+      lastDate: DateTime.now(), //El limite es el dia de hoy
       firstDate: DateTime(2020),
     ).then((fecha) {
       //El usuario no selecciono nada
-      if (fecha == null){
+      if (fecha == null) {
         return;
       }
       setState(() {
         _fechaSeleccionada = fecha;
       });
-      
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -60,7 +59,8 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
             TextField(
               decoration: InputDecoration(labelText: "Descripción"),
               controller: inputDescripcionController,
-              onSubmitted: (_) => _submit(),//se tiene que mandar asi por que recibe un parametro
+              onSubmitted: (_) =>
+                  _submit(), //se tiene que mandar asi por que recibe un parametro
             ),
             TextField(
               decoration: InputDecoration(labelText: "Precio"),
@@ -70,7 +70,6 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
             ),
             Container(
               height: 70,
-              
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -79,8 +78,12 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
                         : DateFormat.yMMMd().format(_fechaSeleccionada)),
                   ),
                   Expanded(
-                    child: RaisedButton(
-                      child: Text("Seleccionar fecha"),
+                    child: FlatButton(
+                      child: Text(
+                        "Seleccionar fecha",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      textColor: Theme.of(context).primaryColor,
                       onPressed: _mostrarCalendario,
                     ),
                   ),
@@ -90,6 +93,8 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
             RaisedButton(
               child: Text('Agregar Transaccion'),
               onPressed: _submit,
+              textColor: Theme.of(context).textTheme.button.color,
+              color: Theme.of(context).primaryColor,
             )
           ],
         ),

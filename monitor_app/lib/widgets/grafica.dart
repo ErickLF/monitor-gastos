@@ -41,11 +41,14 @@ class Grafica extends StatelessWidget {
       margin: EdgeInsets.all(15),
       child: Column(
         children: <Widget>[
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Text('Gastos realizados en los últimos 7 días'),
           Container(
             padding: EdgeInsets.all(10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: transaccionesSemana.map((item) {
                 return Flexible(
                   fit: FlexFit
@@ -53,7 +56,10 @@ class Grafica extends StatelessWidget {
                   child: Barra(
                     item['dia'],
                     item['total'],
-                    maxGastosSemana == 0.0 ? 0.0 : (item['total'] as double) / maxGastosSemana, //evitamos divicion entre 0
+                    maxGastosSemana == 0.0
+                        ? 0.0
+                        : (item['total'] as double) /
+                            maxGastosSemana, //evitamos divicion entre 0
                   ),
                 );
               }).toList(),

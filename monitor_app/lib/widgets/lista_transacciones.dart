@@ -44,11 +44,15 @@ class ListaTransaccion extends StatelessWidget {
                         ),
                       ),
                     ),
-                    title: Text(transaccion[index].titulo),
+                    title: Text(
+                      transaccion[index].titulo,
+                      style: Theme.of(context).textTheme.title,
+                    ),
                     subtitle: Text(
                         DateFormat.yMMMd().format(transaccion[index].fecha)),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
                       onPressed: () =>
                           eliminarTransaccion(transaccion[index].id),
                     ),
