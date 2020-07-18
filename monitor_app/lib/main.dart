@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import './widgets/lista_transacciones.dart';
 import './widgets/nueva_transaccion.dart';
 import './models/transaction.dart';
 import './widgets/grafica.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -89,25 +92,41 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
+    Intl.defaultLocale = 'es';
+    // La hacemos variable para poder tomar en cuenta su altura
+    final appBar = AppBar(
+      // Here we take the value from the MyHomePage object that was created by
+      // the App.build method, and use it to set our appbar title.
+      title: Text(widget.title),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _modalNuevaTransaccion(context),
+        )
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _modalNuevaTransaccion(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Grafica(transacciones),
-            ListaTransaccion(transacciones, _eliminarTransaccion),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context)
+                            .padding
+                            .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
+                    0.4,
+                child: Grafica(transacciones)),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.6,
+                child: ListaTransaccion(transacciones, _eliminarTransaccion)),
           ],
         ),
       ),

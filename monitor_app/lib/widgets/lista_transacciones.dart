@@ -8,9 +8,7 @@ class ListaTransaccion extends StatelessWidget {
   ListaTransaccion(this.transaccion, this.eliminarTransaccion);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      child: transaccion.isEmpty
+    return transaccion.isEmpty
           ? Column(
               children: <Widget>[
                 Text(
@@ -22,13 +20,14 @@ class ListaTransaccion extends StatelessWidget {
                 ),
                 Container(
                   height: 200,
-                  child: Image.asset('assets/images/waiting.png',
-                      fit: BoxFit.cover),
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ],
             )
           : ListView.builder(
-              itemCount: transaccion.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 6,
@@ -59,7 +58,7 @@ class ListaTransaccion extends StatelessWidget {
                   ),
                 );
               },
-            ),
+              itemCount: transaccion.length,
     );
   }
 }

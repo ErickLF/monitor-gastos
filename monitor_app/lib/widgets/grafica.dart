@@ -37,36 +37,36 @@ class Grafica extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8,
-      margin: EdgeInsets.all(15),
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 5,
-          ),
-          Text('Gastos realizados en los últimos 7 días'),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: transaccionesSemana.map((item) {
-                return Flexible(
-                  fit: FlexFit
-                      .tight, //forzamos de que cada item sea del mismo tamaño
-                  child: Barra(
-                    item['dia'],
-                    item['total'],
-                    maxGastosSemana == 0.0
-                        ? 0.0
-                        : (item['total'] as double) /
-                            maxGastosSemana, //evitamos divicion entre 0
-                  ),
-                );
-              }).toList(),
+        elevation: 8,
+        margin: EdgeInsets.all(15),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 5,
             ),
-          )
-        ],
-      ),
+            Text('Gastos realizados en los últimos 7 días'),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: transaccionesSemana.map((item) {
+                  return Flexible(
+                    fit: FlexFit
+                        .tight, //forzamos de que cada item sea del mismo tamaño
+                    child: Barra(
+                      item['dia'],
+                      item['total'],
+                      maxGastosSemana == 0.0
+                          ? 0.0
+                          : (item['total'] as double) /
+                              maxGastosSemana, //evitamos divicion entre 0
+                    ),
+                  );
+                }).toList(),
+              ),
+            )
+          ],
+        ),
     );
   }
 }
