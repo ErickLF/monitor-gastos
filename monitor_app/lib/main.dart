@@ -114,19 +114,21 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context)
-                            .padding
-                            .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
-                    0.4,
-                child: Grafica(transacciones)),
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context)
+                          .padding
+                          .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
+                  0.3,
+              child: Grafica(transacciones),
+            ),
             Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.6,
-                child: ListaTransaccion(transacciones, _eliminarTransaccion)),
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: ListaTransaccion(transacciones, _eliminarTransaccion),
+            ),
           ],
         ),
       ),
