@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import './widgets/lista_transacciones.dart';
@@ -62,7 +66,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
   List<Transaccion> transacciones = [];
   void _agregarNuevaTransaccion(
       String descripcion, double precio, DateTime fecha) {
@@ -103,22 +106,36 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final isLandscape =
-        mediaQuery.orientation == Orientation.landscape;
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
     initializeDateFormatting();
     Intl.defaultLocale = 'es';
     // La hacemos variable para poder tomar en cuenta su altura
-    final appBar = AppBar(
-      // Here we take the value from the MyHomePage object that was created by
-      // the App.build method, and use it to set our appbar title.
-      title: Text(widget.title),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _modalNuevaTransaccion(context),
-        )
-      ],
-    );
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text(widget.title), //titulo
+            //acciones en la barra
+            trailing: Row(
+              //solo tomamos el minimo de que ocupa el hijo
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => _modalNuevaTransaccion(context),
+                )
+              ],
+            ),
+          )
+        : AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: Text(widget.title),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _modalNuevaTransaccion(context),
+              )
+            ],
+          );
     final listaGastos = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
@@ -126,56 +143,72 @@ class _MyHomePageState extends State<MyHomePage> {
           0.7,
       child: ListaTransaccion(transacciones, _eliminarTransaccion),
     );
-    
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final cuerpoApp = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            if(isLandscape) Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Mostrar gráfica', style: Theme.of(context).textTheme.title,),
-                Switch(
-                  value: _mostrarGrafica,
-                  onChanged: (val) {
-                    setState(() {
-                      _mostrarGrafica = val;
-                    });
-                  },
-                ),
-              ],
-            ),
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Mostrar gráfica',
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  Switch.adaptive(
+                    activeColor: Theme.of(context).accentColor,
+                    value: _mostrarGrafica,
+                    onChanged: (val) {
+                      setState(() {
+                        _mostrarGrafica = val;
+                      });
+                    },
+                  ),
+                ],
+              ),
             if (!isLandscape)
               Container(
                 height: (mediaQuery.size.height -
                         appBar.preferredSize.height -
-                        mediaQuery
-                            .padding
+                        mediaQuery.padding
                             .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
                     0.3,
                 child: Grafica(transacciones),
               ),
             if (!isLandscape) listaGastos,
-            if(isLandscape) _mostrarGrafica ? Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery
-                            .padding
-                            .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
-                    0.6,
-                  child: Grafica(transacciones),
-                  ) : listaGastos,
+            if (isLandscape)
+              _mostrarGrafica
+                  ? Container(
+                      height: (mediaQuery.size.height -
+                              appBar.preferredSize.height -
+                              mediaQuery.padding
+                                  .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
+                          0.6,
+                      child: Grafica(transacciones),
+                    )
+                  : listaGastos,
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _modalNuevaTransaccion(context),
-      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: cuerpoApp,
+            navigationBar: appBar,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: cuerpoApp,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _modalNuevaTransaccion(context),
+                  ));
   }
 }

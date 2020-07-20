@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../widgets/adaptive_flat_button.dart';
 
 class NuevaTransaccion extends StatefulWidget {
   //Recibimos un puntero a la funcion del padre para guardar la transaccion
@@ -80,19 +84,11 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
                   children: <Widget>[
                     Expanded(
                       child: Text(_fechaSeleccionada == null
-                          ? "No ha seleccionado fecha"
+                          ? "No ha seleccionado"
                           : DateFormat.yMMMd().format(_fechaSeleccionada)),
                     ),
-                    Expanded(
-                      child: FlatButton(
-                        child: Text(
-                          "Seleccionar fecha",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        textColor: Theme.of(context).primaryColor,
-                        onPressed: _mostrarCalendario,
-                      ),
-                    ),
+                      AdaptiveFlatButton(_mostrarCalendario, "Seleccionar fecha"),
+                    
                   ],
                 ),
               ),
