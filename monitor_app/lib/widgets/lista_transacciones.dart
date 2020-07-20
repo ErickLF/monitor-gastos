@@ -9,9 +9,8 @@ class ListaTransaccion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transaccion.isEmpty
-          ? LayoutBuilder(
-      builder: (ctx, constraints) {
-        return Column(
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
               children: <Widget>[
                 Text(
                   'No hay transacciones',
@@ -29,39 +28,47 @@ class ListaTransaccion extends StatelessWidget {
                 ),
               ],
             );
-      })
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 6,
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: FittedBox(
-                          //Para que el precio no se salga del circulo
-                          child: Text('\$ ${transaccion[index].precio}'),
-                        ),
+          })
+        : ListView.builder(
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 6,
+                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: FittedBox(
+                        //Para que el precio no se salga del circulo
+                        child: Text('\$ ${transaccion[index].precio}'),
                       ),
                     ),
-                    title: Text(
-                      transaccion[index].titulo,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    subtitle: Text(
-                        DateFormat.yMMMd().format(transaccion[index].fecha)),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () =>
-                          eliminarTransaccion(transaccion[index].id),
-                    ),
                   ),
-                );
-              },
-              itemCount: transaccion.length,
-    );
+                  title: Text(
+                    transaccion[index].titulo,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  subtitle:
+                      Text(DateFormat.yMMMd().format(transaccion[index].fecha)),
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? FlatButton.icon(
+                          textColor: Theme.of(context).errorColor,
+                          icon: Icon(Icons.delete),
+                          label: Text("Eliminar"),
+                          onPressed: () =>
+                              eliminarTransaccion(transaccion[index].id),
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () =>
+                              eliminarTransaccion(transaccion[index].id),
+                        ),
+                ),
+              );
+            },
+            itemCount: transaccion.length,
+          );
   }
 }

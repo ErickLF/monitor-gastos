@@ -49,54 +49,61 @@ class _NuevaTransaccionState extends State<NuevaTransaccion> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 7,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: "Descripción"),
-              controller: inputDescripcionController,
-              onSubmitted: (_) =>
-                  _submit(), //se tiene que mandar asi por que recibe un parametro
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Precio"),
-              controller: inputPrecioController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submit(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(_fechaSeleccionada == null
-                        ? "No ha seleccionado fecha"
-                        : DateFormat.yMMMd().format(_fechaSeleccionada)),
-                  ),
-                  Expanded(
-                    child: FlatButton(
-                      child: Text(
-                        "Seleccionar fecha",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: _mostrarCalendario,
-                    ),
-                  ),
-                ],
+    return SingleChildScrollView(
+          child: Card(
+        elevation: 7,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10, //Para elevar el form nueva transaccion sabiendo su altura disponible
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: "Descripción"),
+                controller: inputDescripcionController,
+                onSubmitted: (_) =>
+                    _submit(), //se tiene que mandar asi por que recibe un parametro
               ),
-            ),
-            RaisedButton(
-              child: Text('Agregar Transaccion'),
-              onPressed: _submit,
-              textColor: Theme.of(context).textTheme.button.color,
-              color: Theme.of(context).primaryColor,
-            )
-          ],
+              TextField(
+                decoration: InputDecoration(labelText: "Precio"),
+                controller: inputPrecioController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submit(),
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(_fechaSeleccionada == null
+                          ? "No ha seleccionado fecha"
+                          : DateFormat.yMMMd().format(_fechaSeleccionada)),
+                    ),
+                    Expanded(
+                      child: FlatButton(
+                        child: Text(
+                          "Seleccionar fecha",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        textColor: Theme.of(context).primaryColor,
+                        onPressed: _mostrarCalendario,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              RaisedButton(
+                child: Text('Agregar Transaccion'),
+                onPressed: _submit,
+                textColor: Theme.of(context).textTheme.button.color,
+                color: Theme.of(context).primaryColor,
+              )
+            ],
+          ),
         ),
       ),
     );
