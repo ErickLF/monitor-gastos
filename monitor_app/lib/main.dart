@@ -102,8 +102,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+        mediaQuery.orientation == Orientation.landscape;
     initializeDateFormatting();
     Intl.defaultLocale = 'es';
     // La hacemos variable para poder tomar en cuenta su altura
@@ -119,9 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
     final listaGastos = Container(
-      height: (MediaQuery.of(context).size.height -
+      height: (mediaQuery.size.height -
               appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top) *
+              mediaQuery.padding.top) *
           0.7,
       child: ListaTransaccion(transacciones, _eliminarTransaccion),
     );
@@ -149,9 +150,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             if (!isLandscape)
               Container(
-                height: (MediaQuery.of(context).size.height -
+                height: (mediaQuery.size.height -
                         appBar.preferredSize.height -
-                        MediaQuery.of(context)
+                        mediaQuery
                             .padding
                             .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
                     0.3,
@@ -159,9 +160,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             if (!isLandscape) listaGastos,
             if(isLandscape) _mostrarGrafica ? Container(
-                height: (MediaQuery.of(context).size.height -
+                height: (mediaQuery.size.height -
                         appBar.preferredSize.height -
-                        MediaQuery.of(context)
+                        mediaQuery
                             .padding
                             .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
                     0.6,
