@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import './widgets/lista_transacciones.dart';
@@ -7,6 +8,12 @@ import './models/transaction.dart';
 import './widgets/grafica.dart';
 
 void main() {
+  //Inhabilitar el modo horizontal
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
   runApp(MyApp());
 }
 
@@ -41,7 +48,7 @@ class MyApp extends StatelessWidget {
                 )),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Gestor de gastos personales'),
     );
   }
 }
@@ -55,6 +62,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
   List<Transaccion> transacciones = [];
   void _agregarNuevaTransaccion(
       String descripcion, double precio, DateTime fecha) {
@@ -90,8 +98,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  bool _mostrarGrafica = false;
+
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     initializeDateFormatting();
     Intl.defaultLocale = 'es';
     // La hacemos variable para poder tomar en cuenta su altura
@@ -106,6 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ],
     );
+    final listaGastos = Container(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.7,
+      child: ListaTransaccion(transacciones, _eliminarTransaccion),
+    );
+    
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -113,22 +133,40 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context)
-                          .padding
-                          .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
-                  0.3,
-              child: Grafica(transacciones),
+            if(isLandscape) Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Mostrar gráfica', style: Theme.of(context).textTheme.title,),
+                Switch(
+                  value: _mostrarGrafica,
+                  onChanged: (val) {
+                    setState(() {
+                      _mostrarGrafica = val;
+                    });
+                  },
+                ),
+              ],
             ),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.7,
-              child: ListaTransaccion(transacciones, _eliminarTransaccion),
-            ),
+            if (!isLandscape)
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context)
+                            .padding
+                            .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
+                    0.3,
+                child: Grafica(transacciones),
+              ),
+            if (!isLandscape) listaGastos,
+            if(isLandscape) _mostrarGrafica ? Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context)
+                            .padding
+                            .top) * //padding que agrega flutter automaticamente arriba donde viene iconos de wifi
+                    0.6,
+                  child: Grafica(transacciones),
+                  ) : listaGastos,
           ],
         ),
       ),
